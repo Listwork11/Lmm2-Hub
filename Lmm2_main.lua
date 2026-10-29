@@ -2,18 +2,17 @@
     ═══════════════════════════════════════════════════════════
     listwork's hub • MM2 script
     Автор: listwork • ТГК: @listwork1
-    Версия: v1.1 • Багфикс: v7.6
+    Версия: v1.1 • Багфикс: v7.5
     ═══════════════════════════════════════════════════════════
 ]]
-print("[LWH] Автор: listwork • @listwork1 • BOOT v1.1 BF v7.6")
+print("[LWH] Автор: listwork • @listwork1 • BOOT v1.1 BF v7.5")
 local P=game:GetService("Players") local UIS=game:GetService("UserInputService")
 local W=game:GetService("Workspace") local L=game:GetService("Lighting")
 local RS=game:GetService("RunService") local SG=game:GetService("StarterGui")
-local RSrv=game:GetService("ReplicatedStorage")
 local lp=P.LocalPlayer if not lp then warn("[LWH] no LP") return end
 local pg=lp:WaitForChild("PlayerGui",10) if not pg then warn("[LWH] no PG") return end
 print("[LWH] pg ok")
-pcall(function() SG:SetCore("SendNotification",{Title="listwork's hub",Text="v1.1 BF v7.6",Duration=5}) end)
+pcall(function() SG:SetCore("SendNotification",{Title="listwork's hub",Text="v1.1 BF v7.5",Duration=5}) end)
 for _,ch in ipairs(pg:GetChildren()) do if ch:IsA("ScreenGui") and (ch.Name:find("LWH") or ch.Name:find("listwork")) then pcall(function() ch:Destroy() end) end end
 
 local function merge(d,s) local o={} for k,v in pairs(d) do o[k]=((s and s[k])~=nil) and s[k] or v end return o end
@@ -30,6 +29,8 @@ local SHI=Color3.fromRGB(48,48,56) local SHI2=Color3.fromRGB(62,62,72)
 local TXT=Color3.fromRGB(235,235,240) local TXT2=Color3.fromRGB(175,175,185)
 local F=Enum.Font.GothamMedium local FB=Enum.Font.GothamBold
 local function GA() return PAL[CFG.accentIdx] or PAL[1] end
+
+-- forward
 local pl, plS, uiscale_el
 
 local LANG={
@@ -52,7 +53,7 @@ Instance.new("UICorner",str).CornerRadius=UDim.new(1,0)
 local sfl=Instance.new("Frame",str) sfl.Size=UDim2.new(0,0,1,0) sfl.BackgroundColor3=GA()
 Instance.new("UICorner",sfl).CornerRadius=UDim.new(1,0)
 local spc=Instance.new("TextLabel",sc) spc.Size=UDim2.new(1,-20,0,14) spc.Position=UDim2.new(0,10,0,138) spc.BackgroundTransparency=1 spc.Text="0%" spc.TextColor3=GA() spc.Font=FB spc.TextSize=10
-local svr=Instance.new("TextLabel",sc) svr.Size=UDim2.new(1,-20,0,12) svr.Position=UDim2.new(0,10,0,168) svr.BackgroundTransparency=1 svr.Text="v1.1 • BF v7.6 • t.me/listwork1" svr.TextColor3=TXT2 svr.Font=F svr.TextSize=8
+local svr=Instance.new("TextLabel",sc) svr.Size=UDim2.new(1,-20,0,12) svr.Position=UDim2.new(0,10,0,168) svr.BackgroundTransparency=1 svr.Text="v1.1 • BF v7.5 • t.me/listwork1" svr.TextColor3=TXT2 svr.Font=F svr.TextSize=8
 print("[LWH] splash ok")
 
 -- MAIN GUI
@@ -61,6 +62,7 @@ local cam=W.CurrentCamera local cw=0 while not cam and cw<30 do task.wait(0.1); 
 local vp=cam and cam.ViewportSize or Vector2.new(800,600) if vp.X<200 then vp=Vector2.new(800,600) end
 local PW=math.min(540,vp.X-40) local PH=math.min(460,vp.Y-120)
 local LW=math.floor(PW*0.42) local RX=LW+14 local RW=PW-RX-10
+print("[LWH] vp:",vp.X,vp.Y,"PW:",PW,"PH:",PH)
 
 local pn=Instance.new("Frame",gui) pn.Size=UDim2.new(0,PW,0,PH) pn.Position=UDim2.new(0.5,0,0.5,0) pn.AnchorPoint=Vector2.new(0.5,0.5) pn.BackgroundColor3=BG pn.BorderSizePixel=0 pn.Visible=false pn.Active=true pn.ZIndex=50
 Instance.new("UICorner",pn).CornerRadius=UDim.new(0,12)
@@ -73,10 +75,11 @@ local tc=Instance.new("Frame",tb) tc.Size=UDim2.new(1,0,0,10) tc.Position=UDim2.
 local dot=Instance.new("Frame",tb) dot.Size=UDim2.new(0,8,0,8) dot.Position=UDim2.new(0,12,0.5,-4) dot.BackgroundColor3=GA() dot.BorderSizePixel=0 dot.ZIndex=52
 Instance.new("UICorner",dot).CornerRadius=UDim.new(1,0)
 local nlb=Instance.new("TextLabel",tb) nlb.Size=UDim2.new(0,120,1,0) nlb.Position=UDim2.new(0,26,0,0) nlb.BackgroundTransparency=1 nlb.Text="listwork's hub" nlb.TextColor3=TXT nlb.Font=FB nlb.TextSize=12 nlb.TextXAlignment=Enum.TextXAlignment.Left nlb.ZIndex=52
-local vlb=Instance.new("TextLabel",tb) vlb.Size=UDim2.new(0,110,1,0) vlb.Position=UDim2.new(0,146,0,0) vlb.BackgroundTransparency=1 vlb.Text="v1.1 • BF v7.6" vlb.TextColor3=TXT vlb.TextTransparency=0.55 vlb.Font=F vlb.TextSize=9 vlb.TextXAlignment=Enum.TextXAlignment.Left vlb.ZIndex=52
+local vlb=Instance.new("TextLabel",tb) vlb.Size=UDim2.new(0,110,1,0) vlb.Position=UDim2.new(0,146,0,0) vlb.BackgroundTransparency=1 vlb.Text="v1.1 • BF v7.5" vlb.TextColor3=TXT vlb.TextTransparency=0.55 vlb.Font=F vlb.TextSize=9 vlb.TextXAlignment=Enum.TextXAlignment.Left vlb.ZIndex=52
 local mb=Instance.new("TextButton",tb) mb.Size=UDim2.new(0,40,0,32) mb.Position=UDim2.new(1,-44,0,2) mb.BackgroundColor3=SHI mb.Text="_" mb.TextColor3=TXT mb.Font=FB mb.TextSize=18 mb.BorderSizePixel=0 mb.ZIndex=54
 Instance.new("UICorner",mb).CornerRadius=UDim.new(0,6)
 
+-- Resize handle (drag уголком правый-нижний)
 local rh=Instance.new("TextButton",pn)
 rh.Size=UDim2.new(0,24,0,24); rh.Position=UDim2.new(1,-28,1,-28)
 rh.AnchorPoint=Vector2.new(1,1); rh.BackgroundColor3=GA(); rh.BackgroundTransparency=0.55
@@ -152,222 +155,40 @@ end)
 UIS.InputEnded:Connect(function(i) if i.UserInputType==Enum.UserInputType.Touch or i.UserInputType==Enum.UserInputType.MouseButton1 then sliders._active=nil end end)
 print("[LWH] helpers ok")
 
--- ═════ FLING (усиленный, работает через физику) ═════
+-- FLING
 local function doFling(name)
  if name=="none" then return end
- local t=P:FindFirstChild(name)
- if not t or not t.Character then print("[LWH] fling: no char") return end
- local hrp=t.Character:FindFirstChild("HumanoidRootPart")
- if not hrp then print("[LWH] fling: no hrp") return end
- local hum=t.Character:FindFirstChildOfClass("Humanoid")
-
- -- 1. Разблокируем все части
- for _,pt in ipairs(t.Character:GetDescendants()) do
-  if pt:IsA("BasePart") then
-   pt.Anchored=false
-   pt.CanCollide=false
-  end
- end
-
- -- 2. Отключаем состояние (ragdoll-like)
- if hum then
-  pcall(function()
-   hum.PlatformStand=true
-   hum:ChangeState(Enum.HumanoidStateType.Physics)
-  end)
- end
-
- -- 3. Огромный velocity прямо на HRP
+ local t=P:FindFirstChild(name) if not t or not t.Character then return end
+ local h=t.Character:FindFirstChild("HumanoidRootPart") if not h then return end
+ for _,pt in ipairs(t.Character:GetDescendants()) do if pt:IsA("BasePart") then pt.Anchored=false pt.CanCollide=false end end
+ pcall(function() h.AssemblyLinearVelocity=Vector3.new(math.random(-800,800),1500,math.random(-800,800)) h.AssemblyAngularVelocity=Vector3.new(500,500,500) end)
+ local sp
  pcall(function()
-  hrp.AssemblyLinearVelocity=Vector3.new(math.random(-3000,3000),4000,math.random(-3000,3000))
-  hrp.AssemblyAngularVelocity=Vector3.new(math.random(-1000,1000),math.random(-1000,1000),math.random(-1000,1000))
+  sp=Instance.new("Part") sp.Size=Vector3.new(4,4,4) sp.Transparency=1 sp.CanCollide=false sp.CFrame=h.CFrame sp.Parent=W
+  local w=Instance.new("WeldConstraint",sp) w.Part0=sp w.Part1=h
+  local av=Instance.new("BodyAngularVelocity",sp) av.AngularVelocity=Vector3.new(99999,99999,99999) av.MaxTorque=Vector3.new(math.huge,math.huge,math.huge)
+  local bv=Instance.new("BodyVelocity",sp) bv.Velocity=Vector3.new(math.random(-300,300),1200,math.random(-300,300)) bv.MaxForce=Vector3.new(math.huge,math.huge,math.huge)
  end)
-
- -- 4. Spin part с weld (главный метод)
- local sp=Instance.new("Part")
- sp.Size=Vector3.new(6,6,6)
- sp.Transparency=1
- sp.CanCollide=false
- sp.CFrame=hrp.CFrame
- sp.Parent=W
-
- local w=Instance.new("WeldConstraint",sp)
- w.Part0=sp; w.Part1=hrp
-
- local bav=Instance.new("BodyAngularVelocity",sp)
- bav.AngularVelocity=Vector3.new(50000,50000,50000)
- bav.MaxTorque=Vector3.new(math.huge,math.huge,math.huge)
-
- local bv=Instance.new("BodyVelocity",sp)
- bv.Velocity=Vector3.new(math.random(-800,800),3000,math.random(-800,800))
- bv.MaxForce=Vector3.new(math.huge,math.huge,math.huge)
-
- -- 5. Форсим вращение через Heartbeat (усиливает drag)
- local stop=false
- local rotConn
- rotConn=RS.Heartbeat:Connect(function()
-  if stop or not sp or not sp.Parent then if rotConn then rotConn:Disconnect() end return end
-  pcall(function()
-   sp.CFrame=sp.CFrame*CFrame.Angles(math.rad(120),math.rad(120),math.rad(120))
-  end)
- end)
-
- task.delay(4, function()
-  stop=true
-  if rotConn then pcall(function() rotConn:Disconnect() end) end
-  if sp then pcall(function() sp:Destroy() end) end
-  if hum then pcall(function() hum.PlatformStand=false end) end
- end)
-
- print("[LWH] FLING:",name,"✓")
+ print("[LWH] FLING:",name)
+ task.delay(3,function() if sp then pcall(function() sp:Destroy() end) end end)
 end
 
--- ═════ РОЛИ: 5+ методов детекции БЕЗ оружия в руке ═════
+-- ROLES
 local RC={murderer=Color3.fromRGB(255,60,60),sheriff=Color3.fromRGB(60,150,255),innocent=Color3.fromRGB(100,255,100),dead=Color3.fromRGB(255,255,255)}
 local seen={}
 local function alive(p) if not p or not p.Character then return false end local h=p.Character:FindFirstChildOfClass("Humanoid") return h and h.Health>0 end
-
--- Скан ВСЕХ Tool/Model/Accessory на персонаже (даже не в руке)
-local function scanCharForWeapons(p)
- if not p or not p.Character then return nil end
- for _,obj in ipairs(p.Character:GetChildren()) do
-  if obj:IsA("Tool") or obj:IsA("Accessory") or obj:IsA("Model") then
-   local n=obj.Name:lower()
-   if n:find("knife") or n:find("dagger") or n:find("blade") then return "murderer" end
-   if n:find("gun") or n:find("revolver") or n:find("pistol") then return "sheriff" end
-  end
- end
- -- Скан Weld/Attachment
- for _,obj in ipairs(p.Character:GetDescendants()) do
-  if obj:IsA("Weld") or obj:IsA("Attachment") or obj:IsA("Motor6D") then
-   local n=obj.Name:lower()
-   if n:find("knife") then return "murderer" end
-   if n:find("gun") then return "sheriff" end
-  end
- end
- return nil
-end
-
--- Скан атрибутов (не только Role - любой признак)
-local function scanAttributes(p)
- if not p then return nil end
- local ok,attrs=pcall(function() return p:GetAttributes() end)
- if ok and attrs then
-  for k,v in pairs(attrs) do
-   local key=string.lower(tostring(k))
-   local val=string.lower(tostring(v))
-   if key:find("role") or key:find("team") then
-    if val:find("murder") then return "murderer" end
-    if val:find("sheriff") then return "sheriff" end
-    if val:find("innocent") then return "innocent" end
-   end
-  end
- end
- return nil
-end
-
--- Скан команд
-local function scanTeam(p)
- if not p then return nil end
- local ok,tm=pcall(function() return p.Team end)
- if ok and tm then
-  local tn=string.lower(tm.Name)
-  if tn:find("murder") then return "murderer" end
-  if tn:find("sheriff") then return "sheriff" end
-  if tn:find("innocent") then return "innocent" end
- end
- return nil
-end
-
--- Скан Backpack (для себя)
-local function scanBackpack(p)
- if not p or p~=lp then return nil end
- local bp=p:FindFirstChild("Backpack")
- if not bp then return nil end
- for _,t in ipairs(bp:GetChildren()) do
-  if t:IsA("Tool") then
-   local n=t.Name:lower()
-   if n:find("knife") then return "murderer" end
-   if n:find("gun") then return "sheriff" end
-  end
- end
- return nil
-end
-
--- CHAT/KILLFEED HOOK: ловим раскрытия ролей в чате
-pcall(function()
- local chatEvents=RSrv:FindFirstChild("DefaultChatSystemChatEvents")
- if chatEvents then
-  local onMsg=chatEvents:FindFirstChild("OnMessageDoneFiltering")
-  if onMsg then
-   onMsg.OnClientEvent:Connect(function(data)
-    if not data or not data.Message then return end
-    local msg=data.Message
-
-    -- "X was the murderer" / "X is the murderer"
-    local name=msg:match("(%S+) was the [Mm]urderer")
-    if not name then name=msg:match("(%S+) is the [Mm]urderer") end
-    if name then
-     local p=P:FindFirstChild(name)
-     if p then seen[p]="murderer"; print("[LWH] CHAT REVEAL murderer:",name) end
-    end
-
-    -- "X was the sheriff"
-    name=msg:match("(%S+) was the [Ss]heriff")
-    if not name then name=msg:match("(%S+) is the [Ss]heriff") end
-    if name then
-     local p=P:FindFirstChild(name)
-     if p then seen[p]="sheriff"; print("[LWH] CHAT REVEAL sheriff:",name) end
-    end
-
-    -- "X killed Y" - X = murderer
-    local killer=msg:match("(%S+) killed")
-    if killer then
-     local p=P:FindFirstChild(killer)
-     if p then seen[p]="murderer"; print("[LWH] KILLFEED murderer:",killer) end
-    end
-
-    -- "X shot Y" - X = sheriff
-    local shooter=msg:match("(%S+) shot")
-    if shooter then
-     local p=P:FindFirstChild(shooter)
-     if p then seen[p]="sheriff"; print("[LWH] KILLFEED sheriff:",shooter) end
-    end
-   end)
-  end
- end
-end)
-
--- Скан Hint системы (вдруг executor умеет)
-pcall(function()
- local sg2=game:GetService("StarterGui")
- local oldOnMessage=sg2.OnMessage
-end)
-
--- Итоговая detectRole
+local function upd(p) if not p or not p.Character then return end for _,t in ipairs(p.Character:GetDescendants()) do if t:IsA("Tool") then local n=t.Name:lower() if n:find("knife") then seen[p]="murderer" end if n:find("gun") then seen[p]="sheriff" end end end if p==lp then local bp=p:FindFirstChild("Backpack") if bp then for _,t in ipairs(bp:GetChildren()) do local n=t.Name:lower() if n:find("knife") then seen[p]="murderer" end if n:find("gun") then seen[p]="sheriff" end end end end end
 local function dRole(p)
  if not p then return nil end
  if not alive(p) then return "dead" end
-
- -- 1. Уже видели в чате/killfeed → знаем
+ local ok,r=pcall(function() return p:GetAttribute("Role") end)
+ if ok and r then local l=string.lower(tostring(r)) if l:find("murder") then return "murderer" end if l:find("sheriff") then return "sheriff" end if l:find("innocent") then return "innocent" end end
+ local ok2,tm=pcall(function() return p.Team end)
+ if ok2 and tm then local tn=string.lower(tm.Name) if tn:find("murder") then return "murderer" end if tn:find("sheriff") then return "sheriff" end end
+ for _,t in ipairs(p.Character:GetDescendants()) do if t:IsA("Tool") then local n=t.Name:lower() if n:find("knife") then return "murderer" end if n:find("gun") then return "sheriff" end end end
  if seen[p] then return seen[p] end
-
- -- 2. Скан атрибутов
- local r=scanAttributes(p) if r then seen[p]=r; return r end
-
- -- 3. Скан команды
- r=scanTeam(p) if r then seen[p]=r; return r end
-
- -- 4. Скан персонажа (Weld/Attachment/Accessory с оружием)
- r=scanCharForWeapons(p) if r then seen[p]=r; return r end
-
- -- 5. Backpack (для себя)
- r=scanBackpack(p) if r then seen[p]=r; return r end
-
- -- 6. Fallback
  return "innocent"
 end
-
 for _,p in ipairs(P:GetPlayers()) do p.CharacterAdded:Connect(function() seen[p]=nil end) end
 P.PlayerAdded:Connect(function(p) p.CharacterAdded:Connect(function() seen[p]=nil end) end)
 
@@ -393,7 +214,7 @@ local function mkESP(c,name)
    local hrp=lp.Character and lp.Character:FindFirstChild("HumanoidRootPart")
    if hrp and h.Parent then n.Text=name.." ["..math.floor((hrp.Position-h.Position).Magnitude).."m]" end
    if S.roles then
-    local p2=P:FindFirstChild(name) local rk=dRole(p2)
+    local p2=P:FindFirstChild(name) upd(p2) local rk=dRole(p2)
     if rk=="dead" then r.Text="" pcall(sHL,c,nil)
     elseif rk=="murderer" then r.Text="Murderer" r.TextColor3=RC.murderer pcall(sHL,c,"murderer")
     elseif rk=="sheriff" then r.Text="Sheriff" r.TextColor3=RC.sheriff pcall(sHL,c,"sheriff")
@@ -407,9 +228,9 @@ end
 local function tk(p) if p==lp then return end if p.Character then mkESP(p.Character,p.Name) end p.CharacterAdded:Connect(function(c) task.wait(0.3) mkESP(c,p.Name) end) p.CharacterRemoving:Connect(function() local e=espF:FindFirstChild(p.Name) if e then e:Destroy() end end) end
 for _,p in ipairs(P:GetPlayers()) do tk(p) end P.PlayerAdded:Connect(tk)
 P.PlayerRemoving:Connect(function(p) local e=espF:FindFirstChild(p.Name) if e then e:Destroy() end end)
-print("[LWH] esp+roles ok")
+print("[LWH] esp ok")
 
--- PICKUP + FARM + CURRENCY (без изменений)
+-- PICKUP
 local plist={} local pset={}
 local function isPick(o)
  if not o then return false end
@@ -430,13 +251,15 @@ task.spawn(rebPick)
 W.DescendantAdded:Connect(function(o) if isPick(o) and not pset[o] then pset[o]=true table.insert(plist,o) end end)
 W.DescendantRemoving:Connect(function(o) if pset[o] then pset[o]=nil local i=table.find(plist,o) if i then table.remove(plist,i) end end end)
 
+-- CURRENCY
 local function cc()
  local ls=lp:FindFirstChild("leaderstats")
- if ls then for _,st2 in ipairs(ls:GetChildren()) do if st2:IsA("IntValue") or st2:IsA("NumberValue") then local n=st2.Name:lower() if n:find("coin") or n:find("money") or n:find("cash") or n:find("candy") or n:find("sweet") then return st2.Value end end end end
+ if ls then for _,st in ipairs(ls:GetChildren()) do if st:IsA("IntValue") or st:IsA("NumberValue") then local n=st.Name:lower() if n:find("coin") or n:find("money") or n:find("cash") or n:find("candy") or n:find("sweet") then return st.Value end end end end
  local bp=lp:FindFirstChild("Backpack") if not bp then return 0 end
  local c=0 for _,t in ipairs(bp:GetChildren()) do if t:IsA("Tool") then c=c+1 end end return c
 end
 
+-- FARM LOOP
 local fBV=nil local tgt=nil
 local function tick()
  if not S.farm then if fBV then pcall(function() fBV:Destroy() end) fBV=nil end tgt=nil local h=lp.Character and lp.Character:FindFirstChildOfClass("Humanoid") if h then h.WalkSpeed=16 end return end
@@ -459,6 +282,7 @@ local function tick()
 end
 task.spawn(function() while true do task.wait(0.03) pcall(tick) end end)
 
+-- MODE ROW
 local function addModes()
  local row=Instance.new("Frame",rs) row.Size=UDim2.new(1,0,0,34) row.BackgroundTransparency=1 row.ZIndex=53
  local opts={"coins","candy"} local lbls={coins=T("mc"),candy=T("mcandy")} local btns={}
@@ -471,6 +295,7 @@ local function addModes()
  end
 end
 
+-- ACCENTS (обновляет и pill цвет!)
 local function addAcc()
  local grid=Instance.new("Frame",rs) grid.Size=UDim2.new(1,0,0,120) grid.BackgroundColor3=SHI grid.BorderSizePixel=0 grid.ZIndex=53
  Instance.new("UICorner",grid).CornerRadius=UDim.new(0,8)
@@ -485,16 +310,23 @@ local function addAcc()
   rf_() bc(b,function()
    CFG.accentIdx=i getgenv().LWH_CFG=CFG
    for _,r in pairs(btns) do pcall(r) end
-   dot.BackgroundColor3=GA() sl.BackgroundColor3=GA() st.TextColor3=GA() sfl.BackgroundColor3=GA() spc.TextColor3=GA() rt.TextColor3=GA()
-   if pl then pl.TextColor3=GA() end
-   if plS then plS.Color=GA() end
-   ls.ScrollBarImageColor3=GA() rs.ScrollBarImageColor3=GA()
+   dot.BackgroundColor3=GA()
+   sl.BackgroundColor3=GA()
+   st.TextColor3=GA()
+   sfl.BackgroundColor3=GA()
+   spc.TextColor3=GA()
+   rt.TextColor3=GA()
+   if pl then pl.TextColor3=GA() end  -- ← цвет текста pill
+   if plS then plS.Color=GA() end    -- ← обводка pill
+   ls.ScrollBarImageColor3=GA()
+   rs.ScrollBarImageColor3=GA()
    showF(cur)
   end)
   table.insert(btns,rf_)
  end
 end
 
+-- FUNC BTNS + showF
 local funcs={} local cur="farm" local showF
 showF=function(id)
  cur=id cr()
@@ -528,11 +360,15 @@ showF=function(id)
    end end
   end rf_()
   addSec(T("act")) addAct(T("fa"),function() doFling(FSEL) end)
-  addAct(T("fall"),function() for _,p in ipairs(P:GetPlayers()) do if p~=lp then pcall(doFling,p.Name) task.wait(0.3) end end end)
+  addAct(T("fall"),function() for _,p in ipairs(P:GetPlayers()) do if p~=lp then pcall(doFling,p.Name) task.wait(0.15) end end end)
  elseif id=="settings" then
   addSec(T("acc")) addAcc()
+  -- Resize slider
   addSec(T("uisz"))
-  addSld(T("uisz"),50,150,5,function() return math.floor((uiscale_el.Scale or 1)*100) end,function(v) uiscale_el.Scale=v/100 CFG.uiscale=v/100 getgenv().LWH_CFG=CFG end,function(v) return v.."%" end)
+  addSld(T("uisz"),50,150,5,
+   function() return math.floor((uiscale_el.Scale or 1)*100) end,
+   function(v) uiscale_el.Scale=v/100 CFG.uiscale=v/100 getgenv().LWH_CFG=CFG end,
+   function(v) return v.."%" end)
   addSec(T("lang"))
   local lr=Instance.new("Frame",rs) lr.Size=UDim2.new(1,0,0,44) lr.BackgroundColor3=SHI lr.BorderSizePixel=0 lr.ZIndex=53
   Instance.new("UICorner",lr).CornerRadius=UDim.new(0,8)
@@ -548,7 +384,7 @@ showF=function(id)
   Instance.new("UICorner",ac).CornerRadius=UDim.new(0,8)
   local a1=Instance.new("TextLabel",ac) a1.Size=UDim2.new(1,-20,0,20) a1.Position=UDim2.new(0,12,0,10) a1.BackgroundTransparency=1 a1.Text=T("auth") a1.TextColor3=GA() a1.TextXAlignment=Enum.TextXAlignment.Left a1.Font=FB a1.TextSize=14 a1.ZIndex=54
   local a2=Instance.new("TextLabel",ac) a2.Size=UDim2.new(1,-20,0,18) a2.Position=UDim2.new(0,12,0,32) a2.BackgroundTransparency=1 a2.Text=T("tg") a2.TextColor3=TXT a2.TextXAlignment=Enum.TextXAlignment.Left a2.Font=F a2.TextSize=12 a2.ZIndex=54
-  local a3=Instance.new("TextLabel",ac) a3.Size=UDim2.new(1,-20,0,14) a3.Position=UDim2.new(0,12,0,54) a3.BackgroundTransparency=1 a3.Text="listwork's hub v1.1 • BF v7.6" a3.TextColor3=TXT2 a3.TextXAlignment=Enum.TextXAlignment.Left a3.Font=F a3.TextSize=9 a3.ZIndex=54
+  local a3=Instance.new("TextLabel",ac) a3.Size=UDim2.new(1,-20,0,14) a3.Position=UDim2.new(0,12,0,54) a3.BackgroundTransparency=1 a3.Text="listwork's hub v1.1 • BF v7.5" a3.TextColor3=TXT2 a3.TextXAlignment=Enum.TextXAlignment.Left a3.Font=F a3.TextSize=9 a3.ZIndex=54
   local cp=Instance.new("TextButton",ac) cp.Size=UDim2.new(1,-24,0,24) cp.Position=UDim2.new(0,12,0,60) cp.BackgroundColor3=GA() cp.Text=T("copy") cp.TextColor3=Color3.fromRGB(15,15,20) cp.Font=FB cp.TextSize=10 cp.BorderSizePixel=0 cp.ZIndex=54 Instance.new("UICorner",cp).CornerRadius=UDim.new(0,6)
   bc(cp,function() if type(setclipboard)=="function" then pcall(setclipboard,"@listwork1") cp.Text="✔" task.wait(1) cp.Text=T("copy") end end)
  elseif id=="noclip" then
@@ -569,9 +405,10 @@ local function mkFB(id,isT)
  bc(b,function() showF(id) end)
 end
 mkFB("farm",true) mkFB("aim",true) mkFB("hitbox",true) mkFB("killaura",true) mkFB("autoknife",true) mkFB("esp",true) mkFB("roles",true) mkFB("fullbright",true) mkFB("noclip",true) mkFB("infjump",true) mkFB("speed",true) mkFB("fling",false) mkFB("teleport",false) mkFB("settings",false)
+print("[LWH] func btns ok")
 showF("farm")
 
--- PILL
+-- PILL (теперь pl и plS видны в addAcc)
 pl=Instance.new("TextButton",gui) pl.Name="Pill" pl.Size=UDim2.new(0,180,0,44) pl.Position=UDim2.new(0.5,-90,0,16) pl.BackgroundColor3=SHI2 pl.Text="listwork's hub" pl.TextColor3=GA() pl.TextSize=13 pl.Font=FB pl.BorderSizePixel=0 pl.Visible=false pl.ZIndex=60 pl.AutoButtonColor=false
 Instance.new("UICorner",pl).CornerRadius=UDim.new(1,0)
 plS=Instance.new("UIStroke",pl) plS.Color=GA() plS.Thickness=2 plS.Transparency=0.3
@@ -597,8 +434,9 @@ UIS.InputBegan:Connect(function(i)
 end)
 UIS.InputChanged:Connect(function(i) if not dg or not ds or not dsp then return end if i.UserInputType==Enum.UserInputType.Touch or i.UserInputType==Enum.UserInputType.MouseMovement then local d=i.Position-ds pn.Position=UDim2.new(dsp.X.Scale,dsp.X.Offset+d.X,dsp.Y.Scale,dsp.Y.Offset+d.Y) end end)
 UIS.InputEnded:Connect(function(i) if i.UserInputType==Enum.UserInputType.Touch or i.UserInputType==Enum.UserInputType.MouseButton1 then dg=false ds=nil dsp=nil end end)
+print("[LWH] drag+pill ok")
 
--- RESIZE
+-- RESIZE через уголок
 local rdrag=false local rstart=nil local rscaleStart=nil
 rh.InputBegan:Connect(function(i)
  if i.UserInputType~=Enum.UserInputType.Touch and i.UserInputType~=Enum.UserInputType.MouseButton1 then return end
@@ -614,8 +452,11 @@ UIS.InputChanged:Connect(function(i)
  uiscale_el.Scale=ns CFG.uiscale=ns getgenv().LWH_CFG=CFG
 end)
 UIS.InputEnded:Connect(function(i)
- if i.UserInputType==Enum.UserInputType.Touch or i.UserInputType==Enum.UserInputType.MouseButton1 then rdrag=false rstart=nil rscaleStart=nil end
+ if i.UserInputType==Enum.UserInputType.Touch or i.UserInputType==Enum.UserInputType.MouseButton1 then
+  rdrag=false rstart=nil rscaleStart=nil
+ end
 end)
+print("[LWH] resize ok")
 
 -- LOGIC
 local leA=0 local lJA=0
@@ -633,6 +474,7 @@ end)
 task.spawn(function() while true do task.wait(0.3) local h=lp.Character and lp.Character:FindFirstChildOfClass("Humanoid") if S.walkspeed and h then h.WalkSpeed=35 end end end)
 local fbP=false
 task.spawn(function() while true do task.wait(0.2) if S.fullbright and not fbP then L.Ambient=Color3.fromRGB(180,180,180) L.OutdoorAmbient=Color3.fromRGB(180,180,180) L.Brightness=3 L.FogEnd=1e6 fbP=true elseif not S.fullbright and fbP then L.Ambient=Color3.fromRGB(70,70,70) L.OutdoorAmbient=Color3.fromRGB(128,128,128) L.Brightness=2 L.FogEnd=100000 fbP=false end end end)
+print("[LWH] logic ok")
 
 -- SPLASH RUN
 task.spawn(function()
@@ -645,5 +487,5 @@ task.spawn(function()
 end)
 
 getgenv().LWH={state=S,farmCfg=FC,cleanup=function() if gui then pcall(function() gui:Destroy() end) end if sg then pcall(function() sg:Destroy() end) end end}
-print("[LWH] v1.1 BF v7.6 loaded OK")
+print("[LWH] v1.1 BF v7.5 loaded OK")
 print("[LWH] Автор: listwork • ТГК: @listwork1")
