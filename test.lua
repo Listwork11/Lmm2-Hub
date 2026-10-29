@@ -6,8 +6,9 @@ local W=game:GetService("Workspace")
 local UIS=game:GetService("UserInputService")
 local VIM=game:GetService("VirtualInputManager")
 local Li=game:GetService("Lighting")
+local Tw=game:GetService("TweenService")
 local G=(getgenv and getgenv()) or _G
-local VER="v1.2"
+local VER="v1.3"
 local LP=P.LocalPlayer
 if not LP then repeat task.wait(0.1);LP=P.LocalPlayer until LP end
 if G.LWH and G.LWH.cleanup then pcall(G.LWH.cleanup) end
@@ -26,7 +27,6 @@ local running=true
 local function cx(s,f) local c=s:Connect(f) table.insert(conns,c) return c end
 local function sf(f,...) local ok,r=pcall(f,...) return ok and r end
 
---═══════ i18n ═══════
 local L={
  RU={combat="БОЙ",visual="ВИЗУАЛ",utils="УТИЛИТЫ",about="О СКРИПТЕ",
   farm="Автофарм",aim="Аимбот",hitbox="Хитбокс",killaura="KillAura",autoknife="Авто-нож",
@@ -51,7 +51,6 @@ local L={
 }
 local function T(k) return (L[CFG.lang] or L.RU)[k] or k end
 
---═══════ M3 tokens ═══════
 local M={surface=Color3.fromRGB(20,18,24),surfaceCont=Color3.fromRGB(30,27,34),
  surfaceHigh=Color3.fromRGB(40,36,45),primary=CFG.accent,
  primaryCont=CFG.accent:Lerp(Color3.new(),0.4),
@@ -61,7 +60,6 @@ local FONT=Enum.Font.GothamMedium
 local FB=Enum.Font.GothamBold
 local PAL={Color3.fromRGB(208,188,255),Color3.fromRGB(255,180,171),Color3.fromRGB(180,255,200),Color3.fromRGB(255,220,150),Color3.fromRGB(150,220,255),Color3.fromRGB(255,170,220),Color3.fromRGB(200,255,150),Color3.fromRGB(255,150,150),Color3.fromRGB(180,180,255),Color3.fromRGB(150,255,220),Color3.fromRGB(255,200,140),Color3.fromRGB(220,180,255),Color3.fromRGB(140,200,140),Color3.fromRGB(255,140,180),Color3.fromRGB(180,220,255),Color3.fromRGB(235,235,235)}
 
---═══════ role logic ═══════
 local function myRole()
   local ok,r=pcall(function() return LP:GetAttribute("Role") end)
   if ok and r then
@@ -120,7 +118,6 @@ local function canAtk(head)
   return false
 end
 
---═══════ cleanup ═══════
 pcall(function()
   local cg=game:GetService("CoreGui")
   if cg then for _,n in ipairs{"ListworksHub","LWH_ESP","LWH_Splash"} do local x=cg:FindFirstChild(n) if x then x:Destroy() end end end
@@ -190,23 +187,23 @@ vl.Font=FONT; vl.TextSize=10
 
 local function fadeIn()
   for _,o in ipairs{{sc,"BackgroundTransparency",0.4},{cd,"BackgroundTransparency",0},{cs,"Transparency",0},{lg,"BackgroundTransparency",0},{tr,"BackgroundTransparency",0},{fl,"BackgroundTransparency",0}} do
-    game:GetService("TweenService"):Create(o[1],TweenInfo.new(0.3),{[o[2]]=o[3]}):Play()
+    Tw:Create(o[1],TweenInfo.new(0.3),{[o[2]]=o[3]}):Play()
   end
-  game:GetService("TweenService"):Create(cSc,TweenInfo.new(0.4,Enum.EasingStyle.Back),{Scale=1}):Play()
+  Tw:Create(cSc,TweenInfo.new(0.4,Enum.EasingStyle.Back),{Scale=1}):Play()
   task.wait(0.15)
   for _,o in ipairs{{lgT,"TextTransparency",0},{tl,"TextTransparency",0},{sl,"TextTransparency",0},{st,"TextTransparency",0},{pt,"TextTransparency",0},{vl,"TextTransparency",0.45}} do
-    game:GetService("TweenService"):Create(o[1],TweenInfo.new(0.3),{[o[2]]=o[3]}):Play()
+    Tw:Create(o[1],TweenInfo.new(0.3),{[o[2]]=o[3]}):Play()
   end
 end
 local function fadeOut()
   for _,o in ipairs{sc,cd,lg,tr,fl} do
-    game:GetService("TweenService"):Create(o,TweenInfo.new(0.35),{BackgroundTransparency=1}):Play()
+    Tw:Create(o,TweenInfo.new(0.35),{BackgroundTransparency=1}):Play()
   end
-  game:GetService("TweenService"):Create(cs,TweenInfo.new(0.35),{Transparency=1}):Play()
+  Tw:Create(cs,TweenInfo.new(0.35),{Transparency=1}):Play()
   for _,t in ipairs{lgT,tl,sl,st,pt,vl} do
-    game:GetService("TweenService"):Create(t,TweenInfo.new(0.3),{TextTransparency=1}):Play()
+    Tw:Create(t,TweenInfo.new(0.3),{TextTransparency=1}):Play()
   end
-  game:GetService("TweenService"):Create(cSc,TweenInfo.new(0.4),{Scale=0.9}):Play()
+  Tw:Create(cSc,TweenInfo.new(0.4),{Scale=0.9}):Play()
   task.wait(0.45)
   if sp then pcall(function() sp:Destroy() end) end
 end
@@ -214,6 +211,7 @@ end
 --═══════ GUI ROOT ═══════
 local gui=Instance.new("ScreenGui")
 gui.Name="ListworksHub"; gui.ResetOnSpawn=false; gui.IgnoreGuiInset=true
+gui.DisplayOrder=100; gui.ZIndexBehavior=Enum.ZIndexBehavior.Sibling
 pcall(function() gui.Parent=game:GetService("CoreGui") end)
 if not gui.Parent then gui.Parent=LP:WaitForChild("PlayerGui") end
 local uiS=Instance.new("UIScale",gui)
@@ -225,7 +223,6 @@ end
 adapt()
 cx(W.CurrentCamera:GetPropertyChangedSignal("ViewportSize"),adapt)
 
---═══════ helpers ═══════
 local lastClick=0
 local lastEquip=0
 local lastJump=0
@@ -308,7 +305,6 @@ local function setFB(v)
   end
 end
 
---═══════ ESP ═══════
 local espF=Instance.new("Folder")
 espF.Name="LWH_ESP"
 pcall(function() espF.Parent=game:GetService("CoreGui") end)
@@ -362,7 +358,6 @@ cx(P.PlayerRemoving,function(p)
   REST.hitbox[p]=nil
 end)
 
---═══════ pickup ═══════
 local function pickable(o)
   if not o then return false end
   if not (o:IsA("BasePart") or o:IsA("Model")) then return false end
@@ -384,9 +379,7 @@ cx(W.DescendantRemoving,function(o)
   local i=table.find(pc,o); if i then table.remove(pc,i) end
 end)
 
---═══════ MAIN LOOPS ═══════
 cx(RS.Heartbeat,function()
-  -- Hitbox
   if S.hitbox then
     for _,p in ipairs(P:GetPlayers()) do
       if p~=LP and p.Character then
@@ -404,7 +397,6 @@ cx(RS.Heartbeat,function()
     end
     for k in pairs(REST.hitbox) do REST.hitbox[k]=nil end
   end
-  -- AutoKnife
   if S.autoknife then
     local ch=LP.Character
     local hu=ch and ch:FindFirstChildOfClass("Humanoid")
@@ -428,14 +420,12 @@ cx(RS.Heartbeat,function()
       end
     end
   end
-  -- InfJump
   if S.infjump then
     local hrp=LP.Character and LP.Character:FindFirstChild("HumanoidRootPart")
     if hrp and (UIS:IsKeyDown(Enum.KeyCode.Space) or os.clock()-lastJump<0.5) then
       sf(function() hrp.AssemblyLinearVelocity=Vector3.new(hrp.AssemblyLinearVelocity.X,55,hrp.AssemblyLinearVelocity.Z) end)
     end
   end
-  -- KillAura
   if S.killaura then
     local hrp=LP.Character and LP.Character:FindFirstChild("HumanoidRootPart")
     if hrp then
@@ -527,18 +517,28 @@ end)
 local function bind(btn,fn)
   local last=0
   local function h()
-    local n=os.clock(); if n-last<0.08 then return end
+    local n=os.clock()
+    if n-last<0.15 then return end
     last=n; sf(fn)
   end
   cx(btn.MouseButton1Click,h)
+  sf(function() cx(btn.MouseButton1Down,h) end)
   sf(function() cx(btn.TouchTap,h) end)
+  cx(btn.InputBegan,function(input,gp)
+    if gp then return end
+    local t=input.UserInputType
+    if t==Enum.UserInputType.Touch or t==Enum.UserInputType.MouseButton1 then
+      h()
+    end
+  end)
 end
 
 local fab=Instance.new("TextButton",gui)
-fab.Size=UDim2.new(0,54,0,54); fab.Position=UDim2.new(0,16,0.5,-27)
+fab.Size=UDim2.new(0,56,0,56); fab.Position=UDim2.new(0,16,0.5,-28)
 fab.AnchorPoint=Vector2.new(0,0.5); fab.BackgroundColor3=M.primaryCont
-fab.Text="≡"; fab.TextColor3=M.onSurface; fab.TextSize=22
+fab.Text="≡"; fab.TextColor3=M.onSurface; fab.TextSize=24
 fab.Font=FB; fab.AutoButtonColor=false; fab.BorderSizePixel=0
+fab.Active=true; fab.ZIndex=200
 Instance.new("UICorner",fab).CornerRadius=UDim.new(1,0)
 
 local vpX=W.CurrentCamera and W.CurrentCamera.ViewportSize.X or 400
@@ -546,7 +546,8 @@ local pw=math.min(340,math.max(280,vpX-40))
 
 local panel=Instance.new("Frame",gui)
 panel.Size=UDim2.new(0,pw,0,540); panel.Position=UDim2.new(0,-(pw+60),0.5,-270)
-panel.BackgroundColor3=M.surface; panel.BorderSizePixel=0; panel.Active=false
+panel.BackgroundColor3=M.surface; panel.BorderSizePixel=0
+panel.Active=true; panel.Draggable=true; panel.ZIndex=150
 Instance.new("UICorner",panel).CornerRadius=UDim.new(0,24)
 Instance.new("UIStroke",panel).Color=M.surfaceHigh
 
@@ -559,6 +560,7 @@ hT.Size=UDim2.new(1,-100,0,24); hT.Position=UDim2.new(0,16,0,6)
 hT.BackgroundTransparency=1; hT.Text="listwork's hub"
 hT.TextColor3=M.primary; hT.TextXAlignment=Enum.TextXAlignment.Left
 hT.Font=FB; hT.TextSize=17
+onAcc(function(c) hT.TextColor3=c end)
 local hS=Instance.new("TextLabel",hdr)
 hS.Size=UDim2.new(1,-100,0,16); hS.Position=UDim2.new(0,16,0,32)
 hS.BackgroundTransparency=1; hS.Text="MM2 • "..VER
@@ -569,7 +571,7 @@ local closeBtn=Instance.new("TextButton",hdr)
 closeBtn.Size=UDim2.new(0,32,0,32); closeBtn.Position=UDim2.new(1,-40,0,14)
 closeBtn.BackgroundColor3=M.surfaceHigh; closeBtn.Text="✕"
 closeBtn.TextColor3=M.onSurface; closeBtn.Font=FB; closeBtn.TextSize=14
-closeBtn.BorderSizePixel=0
+closeBtn.BorderSizePixel=0; closeBtn.ZIndex=210
 Instance.new("UICorner",closeBtn).CornerRadius=UDim.new(1,0)
 
 local tabsBar=Instance.new("Frame",panel)
@@ -583,7 +585,8 @@ local scroll=Instance.new("ScrollingFrame",panel)
 scroll.Size=UDim2.new(1,-24,1,-124); scroll.Position=UDim2.new(0,12,0,120)
 scroll.BackgroundTransparency=1; scroll.BorderSizePixel=0
 scroll.CanvasSize=UDim2.new(0,0,0,0); scroll.AutomaticCanvasSize=Enum.AutomaticSize.Y
-scroll.ScrollBarThickness=3
+scroll.ScrollBarThickness=3; scroll.ScrollBarImageColor3=M.primary
+onAcc(function(c) scroll.ScrollBarImageColor3=c end)
 local sL=Instance.new("UIListLayout",scroll)
 sL.Padding=UDim.new(0,6); sL.SortOrder=Enum.SortOrder.LayoutOrder
 
@@ -635,6 +638,7 @@ local function mkCard(parent,label,key,guard)
   local c=Instance.new("TextButton",parent)
   c.LayoutOrder=nextLO(); c.Size=UDim2.new(1,0,0,52)
   c.Text=""; c.BorderSizePixel=0; c.AutoButtonColor=false
+  c.ZIndex=160
   Instance.new("UICorner",c).CornerRadius=UDim.new(0,14)
   local sk=Instance.new("UIStroke",c); sk.Thickness=1
   local lb=Instance.new("TextLabel",c)
@@ -667,6 +671,7 @@ local function mkToggle(parent,label,get,set)
   local c=Instance.new("TextButton",parent)
   c.LayoutOrder=nextLO(); c.Size=UDim2.new(1,0,0,44)
   c.Text=""; c.BorderSizePixel=0; c.AutoButtonColor=false
+  c.ZIndex=160
   Instance.new("UICorner",c).CornerRadius=UDim.new(0,12)
   local sk=Instance.new("UIStroke",c); sk.Thickness=1
   local lb=Instance.new("TextLabel",c)
@@ -695,6 +700,7 @@ local function mkCycle(parent,label,opts,get,set,fmt)
   local c=Instance.new("TextButton",parent)
   c.LayoutOrder=nextLO(); c.Size=UDim2.new(1,0,0,44)
   c.BackgroundColor3=M.surfaceCont; c.Text=""; c.BorderSizePixel=0; c.AutoButtonColor=false
+  c.ZIndex=160
   Instance.new("UICorner",c).CornerRadius=UDim.new(0,12)
   local sk=Instance.new("UIStroke",c); sk.Color=M.surfaceHigh; sk.Thickness=1
   local lb=Instance.new("TextLabel",c)
@@ -724,6 +730,7 @@ local function mkAction(parent,label,fn)
   local c=Instance.new("TextButton",parent)
   c.LayoutOrder=nextLO(); c.Size=UDim2.new(1,0,0,52)
   c.BackgroundColor3=M.surfaceCont; c.Text=""; c.BorderSizePixel=0; c.AutoButtonColor=false
+  c.ZIndex=160
   Instance.new("UICorner",c).CornerRadius=UDim.new(0,14)
   local sk=Instance.new("UIStroke",c); sk.Color=M.surfaceHigh; sk.Thickness=1
   local lb=Instance.new("TextLabel",c)
@@ -735,6 +742,7 @@ local function mkAction(parent,label,fn)
   ar.Size=UDim2.new(0,40,1,0); ar.Position=UDim2.new(1,-44,0,0)
   ar.BackgroundTransparency=1; ar.Text="→"; ar.TextColor3=M.primary
   ar.Font=FB; ar.TextSize=16
+  onAcc(function(cc) ar.TextColor3=cc end)
   regR(function() lb.Text=T(label) end)
   bind(c,fn)
 end
@@ -751,7 +759,6 @@ local function mkDiv(parent,label)
   regR(function() l.Text=T(label) end)
 end
 
--- guards
 local function guardFarm(v)
   if not v then return true end
   local r=myRoleC()
@@ -768,7 +775,6 @@ local function guardAK(v)
   return true
 end
 
--- COMBAT
 mkCard(pages.combat,"farm","farm",guardFarm)
 mkCard(pages.combat,"aim","aim")
 mkCard(pages.combat,"hitbox","hitbox")
@@ -794,19 +800,16 @@ mkToggle(pages.combat,"onlyM",
   function() return FC.onlyMurderer end,
   function(v) FC.onlyMurderer=v end)
 
--- VISUAL
 mkCard(pages.visual,"esp","esp")
 mkCard(pages.visual,"roles","roles")
 mkCard(pages.visual,"fullbright","fullbright",function(v) setFB(v) return true end)
 
--- UTILS
 mkCard(pages.utils,"pickup","pickup")
 mkCard(pages.utils,"noclip","noclip")
 mkCard(pages.utils,"infjump","infjump")
 mkCard(pages.utils,"walkspeed","walkspeed")
 mkAction(pages.utils,"tp",tpN)
 
--- ABOUT
 mkDiv(pages.about,"about")
 local ac=Instance.new("Frame",pages.about)
 ac.LayoutOrder=nextLO(); ac.Size=UDim2.new(1,0,0,156)
@@ -815,15 +818,16 @@ Instance.new("UICorner",ac).CornerRadius=UDim.new(0,18)
 local aL=Instance.new("TextLabel",ac)
 aL.Size=UDim2.new(1,-28,0,22); aL.Position=UDim2.new(0,14,0,14)
 aL.BackgroundTransparency=1; aL.TextColor3=M.onSurface; aL.TextXAlignment=Enum.TextXAlignment.Left
-aL.Font=FB; aL.TextSize=15; aL.Text=T("author")
+aL.Font=FB; aL.TextSize=15
 local tL=Instance.new("TextLabel",ac)
 tL.Size=UDim2.new(1,-28,0,20); tL.Position=UDim2.new(0,14,0,38)
 tL.BackgroundTransparency=1; tL.TextColor3=M.primary; tL.TextXAlignment=Enum.TextXAlignment.Left
-tL.Font=FONT; tL.TextSize=13; tL.Text=T("tg")
+tL.Font=FONT; tL.TextSize=13
+onAcc(function(cc) tL.TextColor3=cc end)
 local vL=Instance.new("TextLabel",ac)
 vL.Size=UDim2.new(1,-28,0,18); vL.Position=UDim2.new(0,14,0,60)
 vL.BackgroundTransparency=1; vL.TextColor3=M.onSurfaceVar; vL.TextXAlignment=Enum.TextXAlignment.Left
-vL.Font=FONT; vL.TextSize=11; vL.Text=VER
+vL.Font=FONT; vL.TextSize=11
 local rL=Instance.new("TextLabel",ac)
 rL.Size=UDim2.new(1,-28,0,20); rL.Position=UDim2.new(0,14,0,80)
 rL.BackgroundTransparency=1; rL.TextColor3=M.tertiary; rL.TextXAlignment=Enum.TextXAlignment.Left
@@ -832,9 +836,18 @@ local copyB=Instance.new("TextButton",ac)
 copyB.Size=UDim2.new(0,130,0,28); copyB.Position=UDim2.new(0,14,0,108)
 copyB.BackgroundColor3=M.primaryCont; copyB.Text="copy @listwork1"
 copyB.TextColor3=M.primary; copyB.Font=FB; copyB.TextSize=10; copyB.BorderSizePixel=0
+copyB.ZIndex=160
 Instance.new("UICorner",copyB).CornerRadius=UDim.new(1,0)
-onAcc(function(c)
-  tL.TextColor3=c; copyB.TextColor3=c
+onAcc(function(c) copyB.TextColor3=c end)
+regR(function()
+  aL.Text=T("author"); tL.Text=T("tg"); vL.Text=VER
+  local r=myRoleC()
+  local rs=T("unknown")
+  if r=="murderer" then rs=T("murderer")
+  elseif r=="sheriff" then rs=T("sheriff")
+  elseif r=="innocent" then rs=T("innocent") end
+  rL.Text="Role: "..rs
+  copyB.Text="copy @listwork1"
 end)
 task.spawn(function()
   while running do
@@ -863,12 +876,12 @@ Instance.new("UICorner",lr).CornerRadius=UDim.new(0,14)
 local rb=Instance.new("TextButton",lr)
 rb.Size=UDim2.new(0.5,-6,1,-10); rb.Position=UDim2.new(0,4,0,5)
 rb.BackgroundColor3=M.surfaceHigh; rb.Text="RU"; rb.TextColor3=M.onSurface
-rb.Font=FB; rb.TextSize=12; rb.BorderSizePixel=0
+rb.Font=FB; rb.TextSize=12; rb.BorderSizePixel=0; rb.ZIndex=160
 Instance.new("UICorner",rb).CornerRadius=UDim.new(0,10)
 local eb=Instance.new("TextButton",lr)
 eb.Size=UDim2.new(0.5,-6,1,-10); eb.Position=UDim2.new(0.5,2,0,5)
 eb.BackgroundColor3=M.surfaceHigh; eb.Text="EN"; eb.TextColor3=M.onSurface
-eb.Font=FB; eb.TextSize=12; eb.BorderSizePixel=0
+eb.Font=FB; eb.TextSize=12; eb.BorderSizePixel=0; eb.ZIndex=160
 Instance.new("UICorner",eb).CornerRadius=UDim.new(0,10)
 regR(function()
   rb.BackgroundColor3=CFG.lang=="RU" and M.primaryCont or M.surfaceHigh
@@ -889,7 +902,7 @@ gL.VerticalAlignment=Enum.VerticalAlignment.Center
 for i,c3 in ipairs(PAL) do
   local b=Instance.new("TextButton",gr)
   b.LayoutOrder=i; b.Size=UDim2.new(0,28,0,28)
-  b.BackgroundColor3=c3; b.Text=""; b.BorderSizePixel=0
+  b.BackgroundColor3=c3; b.Text=""; b.BorderSizePixel=0; b.ZIndex=160
   Instance.new("UICorner",b).CornerRadius=UDim.new(1,0)
   bind(b,function()
     CFG.accent=c3
@@ -899,11 +912,10 @@ for i,c3 in ipairs(PAL) do
   end)
 end
 
--- OPEN/CLOSE
 local opened=false
 local function setOpen(v)
   opened=v
-  game:GetService("TweenService"):Create(panel,TweenInfo.new(0.28,Enum.EasingStyle.Emphasized),{
+  Tw:Create(panel,TweenInfo.new(0.28,Enum.EasingStyle.Emphasized),{
     Position=v and UDim2.new(0,80,0.5,-270) or UDim2.new(0,-(pw+60),0.5,-270)
   }):Play()
 end
@@ -922,7 +934,6 @@ end)
 setTab("combat")
 if S.fullbright then setFB(true) end
 
---═══════ CLEANUP ═══════
 G.LWH={
   state=S,farmCfg=FC,version=VER,
   cleanup=function()
@@ -951,7 +962,6 @@ G.LWH={
   end,
 }
 
---═══════ SPLASH RUN ═══════
 task.spawn(function()
   fadeIn()
   local start=os.clock(); local dur=1.5
